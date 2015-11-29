@@ -45,6 +45,33 @@ class ScalarMultiplyTest(unittest.TestCase):
         self.assertEqual(Vector([3,6]), 3*v1)
 
 
+class MagnitudeTest(unittest.TestCase):
+
+    def testMagnitudeOfAVector(self):
+        v1 = Vector([4,4])
+
+        self.assertAlmostEqual(v1.magnitude(), 5.65685424949238)
+
+
+class NormalizationTest(unittest.TestCase):
+
+    def testNormalizationOfAVector(self):
+        v1 = Vector([4,4])
+
+        v1n = v1.normalized()
+
+        self.assertAlmostEqual(v1n.coordinates[0], 0.7071067811865475)
+        self.assertAlmostEqual(v1n.coordinates[1], 0.7071067811865475)
+        self.assertAlmostEqual(v1n.magnitude(), 1)
+
+    def testNormalizedHandlesZeroVectorWithException(self):
+        v1 = Vector([0,0])
+
+        with self.assertRaises(Exception) as context:
+            v1.normalized()
+
+        self.assertTrue('Cannot normalize the zero vector' in str(context.exception))
+
 
 
 
