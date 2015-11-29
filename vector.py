@@ -55,10 +55,20 @@ class Vector(object):
         # direction)
         try:
             return (1/self.magnitude()) * self
-
         except ZeroDivisionError:
-            raise Exception("Cannot normalize the zero vector")
+            raise Exception('Cannot normalize the zero vector')
 
+    def dot(self, v):
+        # the dot product is the sum of the corresponding components multiplied together
+        return sum([(x*y) for (x,y) in zip(self.coordinates, v.coordinates)])
+
+    def angleBetween(self, v, degrees=False):
+        try:
+            radians_between = math.acos((self.dot(v)) / (self.magnitude() * v.magnitude()))
+        except ZeroDivisionError:
+            raise Exception('Cannot calculate the angle between using a zero vector')
+
+        return radians_between if not degrees else math.degrees(radians_between)
 
 
 
@@ -66,9 +76,15 @@ if __name__ == '__main__':
     print(Vector([8.218,-9.341]) + Vector([-1.129,2.111]))
     print(Vector([7.119,8.215]) - Vector([-8.223,0.878]))
     print(7.41 * Vector([1.671,-1.012,-0.318]))
+    print()
 
     print(Vector([-0.221,7.437]).magnitude())
     print(Vector([8.813,-1.331,-6.247]).magnitude())
-
     print(Vector([5.581,-2.136]).normalized())
     print(Vector([1.996,3.108,-4.554]).normalized())
+    print()
+
+    print(Vector([7.887,4.138]).dot(Vector([-8.802,6.776])))
+    print(Vector([-5.955,-4.904,-1.874]).dot(Vector([-4.496,-8.755,7.103])))
+    print(Vector([3.183,-7.627]).angleBetween(Vector([-2.668,5.319])))
+    print(Vector([7.35,0.221,5.188]).angleBetween(Vector([2.751,8.259,3.985]), degrees=True))

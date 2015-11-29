@@ -72,6 +72,41 @@ class NormalizationTest(unittest.TestCase):
 
         self.assertTrue('Cannot normalize the zero vector' in str(context.exception))
 
+class DotProductTest(unittest.TestCase):
+
+    def test_dot_product(self):
+        v1 = Vector([1,2,-1])
+        v2 = Vector([3,1,0])
+
+        self.assertEqual(v1.dot(v2), 5)
+        self.assertEqual(v2.dot(v1), 5)
+
+    def test_dot_product_with_zero_vector(self):
+        v1 = Vector([1,2,-1])
+        v2 = Vector([0,0,0])
+
+        self.assertEqual(v1.dot(v2), 0)
+        self.assertEqual(v2.dot(v1), 0)
+
+
+class AngleBetweenTest(unittest.TestCase):
+
+    def test_angle_between(self):
+        v1 = Vector([1,2,-1])
+        v2 = Vector([3,1,0])
+
+        self.assertAlmostEqual(v1.angleBetween(v2), 0.87, places=2)
+        self.assertAlmostEqual(v1.angleBetween(v2, degrees=True), 50, places=0)
+
+    def test_angle_between_with_zero_vector(self):
+        v1 = Vector([1,2,-1])
+        v2 = Vector([0,0,0])
+
+        with self.assertRaises(Exception) as context:
+            v1.angleBetween(v2)
+
+        self.assertTrue('Cannot calculate the angle between using a zero vector' in str(context.exception))
+
 
 
 
