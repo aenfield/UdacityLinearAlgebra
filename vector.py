@@ -34,12 +34,12 @@ class Vector(object):
         # self + (-(v))? reduces duplication...
 
     # support vector * scalar (for ex, v*3)
-    def __mul__(self, v):
-        return Vector([v*x for x in self.coordinates])
+    def __mul__(self, scalar):
+        return Vector([scalar*x for x in self.coordinates])
 
     # we overload __rmul__ to support scalar * vector operations (for ex, 3*v)
-    def __rmul__(self, v):
-        return self * v  # implement by calling __mul__ here
+    def __rmul__(self, scalar):
+        return self * scalar  # implement by calling __mul__ here
 
     def magnitude(self):
         # magnitude is the sqrt of each component squared (this is the normal formula
@@ -51,7 +51,7 @@ class Vector(object):
         # the normalization of a vector is another vector w/ the same direction and
         # magnitude of one - to get this we multiply the vector in question by
         # one over the magnitude of the vector - i.e., we scale it larger/smaller
-        # so that it's length is one (remember that scaling doesn't change the
+        # so that its length is one (remember that scaling doesn't change the
         # direction)
         try:
             return (1/self.magnitude()) * self
