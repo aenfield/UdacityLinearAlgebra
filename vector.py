@@ -70,6 +70,20 @@ class Vector(object):
 
         return radians_between if not degrees else math.degrees(radians_between)
 
+    def parallelTo(self, v):
+        # the class-defined definition of parallel is where two vectors are scalar
+        # multiples of each other - I wasn't sure how to implement this simply,
+        # and the instructor didn't implement it this way either...
+        return (self.isZero() or v.isZero() or
+                math.isclose(self.angleBetween(v), 0) or
+                math.isclose(self.angleBetween(v), math.pi))
+
+    def orthogonalTo(self, v, tolerance=1e-10):
+        # can't just do self.dot(v) == 0 due to FP rounding issues
+        return abs(self.dot(v)) < tolerance
+
+    def isZero(self, tolerance=1e-10):
+        return self.magnitude() < tolerance
 
 
 if __name__ == '__main__':
@@ -88,3 +102,17 @@ if __name__ == '__main__':
     print(Vector([-5.955,-4.904,-1.874]).dot(Vector([-4.496,-8.755,7.103])))
     print(Vector([3.183,-7.627]).angleBetween(Vector([-2.668,5.319])))
     print(Vector([7.35,0.221,5.188]).angleBetween(Vector([2.751,8.259,3.985]), degrees=True))
+    print()
+
+    v1 = Vector([-7.579,-7.88])
+    w1 = Vector([22.737,23.64])
+    print(v1.parallelTo(w1), v1.orthogonalTo(w1))
+    v2 = Vector([-2.029,9.97,4.172])
+    w2 = Vector([-9.231,-6.639,-7.245])
+    print(v2.parallelTo(w2), v2.orthogonalTo(w2))
+    v3 = Vector([-2.328,-7.284,-1.214])
+    w3 = Vector([-1.821,1.072,-2.94])
+    print(v3.parallelTo(w3), v3.orthogonalTo(w3))
+    v4 = Vector([2.118,4.827])
+    w4 = Vector([0,0])
+    print(v4.parallelTo(w4), v4.orthogonalTo(w4))

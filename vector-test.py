@@ -108,8 +108,66 @@ class AngleBetweenTest(unittest.TestCase):
         self.assertTrue('Cannot calculate the angle between using a zero vector' in str(context.exception))
 
 
+class ParallelAndOrthogonalBooleans(unittest.TestCase):
 
+    def test_parallel_boolean(self):
+        # v1, v2, v3, and of course v0 are all parallel;
+        # v4 is not parallel to v1, v2, or v3 but is parallel to v0
+        v1 = Vector([1,1])
+        v2 = Vector([-1,-1])
+        v3 = Vector([2,2])
+        v4 = Vector([1,0])
+        v0 = Vector([0,0])
 
+        self.assertTrue(v1.parallelTo(v2))
+        self.assertTrue(v2.parallelTo(v1))
+        self.assertTrue(v1.parallelTo(v3))
+        self.assertTrue(v3.parallelTo(v1))
+        self.assertTrue(v1.parallelTo(v0))
+
+        self.assertTrue(v0.parallelTo(v1))
+        self.assertTrue(v2.parallelTo(v0))
+        self.assertTrue(v0.parallelTo(v2))
+        self.assertTrue(v3.parallelTo(v0))
+        self.assertTrue(v0.parallelTo(v3))
+
+        self.assertFalse(v1.parallelTo(v4))
+        self.assertFalse(v2.parallelTo(v4))
+        self.assertFalse(v3.parallelTo(v4))
+        self.assertTrue(v0.parallelTo(v4))
+
+    def test_orthogonal_boolean(self):
+        # v1 and v2 are not orthogonal, v2 is orthogonal to v1 and v2,
+        # v0 is orthogonal to v1, v2, and v3
+        v1 = Vector([1,1])
+        v2 = Vector([-1,-1])
+        v3 = Vector([-1,1])
+        v0 = Vector([0,0])
+
+        self.assertFalse(v1.orthogonalTo(v2))
+        self.assertFalse(v2.orthogonalTo(v1))
+        self.assertTrue(v1.orthogonalTo(v3))
+        self.assertTrue(v3.orthogonalTo(v1))
+        self.assertTrue(v2.orthogonalTo(v3))
+        self.assertTrue(v3.orthogonalTo(v2))
+
+        self.assertTrue(v0.orthogonalTo(v1))
+        self.assertTrue(v0.orthogonalTo(v2))
+        self.assertTrue(v0.orthogonalTo(v3))
+        self.assertTrue(v1.orthogonalTo(v0))
+        self.assertTrue(v2.orthogonalTo(v0))
+        self.assertTrue(v3.orthogonalTo(v0))
+
+        # check that we handle FP rounding too - this is orthogonal, but
+        # if we don't handle rounding we'll say it's not
+        v4 = Vector([-2.328,-7.284,-1.214])
+        v5 = Vector([-1.821,1.072,-2.94])
+        self.assertTrue(v4.orthogonalTo(v5))
+        self.assertTrue(v5.orthogonalTo(v4))
+
+    def test_iszero_boolean(self):
+        self.assertTrue(Vector([0,0]).isZero())
+        self.assertFalse(Vector([1,1]).isZero())
 
 
 
