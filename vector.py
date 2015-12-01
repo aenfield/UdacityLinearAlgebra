@@ -75,16 +75,17 @@ class Vector(object):
         # multiples of each other - I wasn't sure how to implement this simply,
         # and the instructor didn't implement it this way either...
         return (self.isZero() or v.isZero() or
-                math.isclose(self.angleBetween(v), 0) or
-                math.isclose(self.angleBetween(v), math.pi))
+                math.isclose(self.angleBetween(v), 0, abs_tol=1e-05) or
+                math.isclose(self.angleBetween(v), math.pi, rel_tol=1e-05))
 
     def orthogonalTo(self, v, tolerance=1e-10):
         # can't just do self.dot(v) == 0 due to FP rounding issues
         return abs(self.dot(v)) < tolerance
+        # TODO update to use math.isclose?
 
     def isZero(self, tolerance=1e-10):
         return self.magnitude() < tolerance
-
+        # TODO update to use math.isclose?
 
 if __name__ == '__main__':
     print(Vector([8.218,-9.341]) + Vector([-1.129,2.111]))
