@@ -169,6 +169,19 @@ class ParallelAndOrthogonalBooleans(unittest.TestCase):
         self.assertTrue(Vector([0,0]).isZero())
         self.assertFalse(Vector([1,1]).isZero())
 
+class ProjectingVectors(unittest.TestCase):
+
+    def test_projection_onto_basis_vector(self):
+        v = Vector([1,1])
+        b = Vector([5,0])
+
+        self.assertEqual(v.projectedOnTo(b), Vector([1,0]))
+
+    def test_component_orthogonal_to_basis(self):
+        v = Vector([1,1])
+        b = Vector([5,0])
+
+        self.assertEqual(v.componentOrthogonalTo(b), Vector([0,1]))        
 
 
 

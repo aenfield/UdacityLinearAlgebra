@@ -87,6 +87,20 @@ class Vector(object):
         return self.magnitude() < tolerance
         # TODO update to use math.isclose?
 
+    def projectedOnTo(self, b):
+        magnitude_of_projection = self.dot(b.normalized())
+        return magnitude_of_projection * b.normalized()
+        # his impl catches attempts to to normalize the zero vector and raises an exception
+
+    def componentOrthogonalTo(self, b):
+        # since v = v parallel + v orthogonal, then
+        # v orthogonal = v - v parallel, which we use here:
+        return self - self.projectedOnTo(b) # self.projectedOnTo(b) is v parallel
+        # his impl catches the exception his impl raises in projectedOnTo
+
+
+
+
 if __name__ == '__main__':
     print(Vector([8.218,-9.341]) + Vector([-1.129,2.111]))
     print(Vector([7.119,8.215]) - Vector([-8.223,0.878]))
@@ -117,3 +131,11 @@ if __name__ == '__main__':
     v4 = Vector([2.118,4.827])
     w4 = Vector([0,0])
     print(v4.parallelTo(w4), v4.orthogonalTo(w4))
+    print()
+
+    print(Vector([3.039,1.879]).projectedOnTo(Vector([0.825,2.036])))
+    print(Vector([-9.88,-3.264,-8.159]).componentOrthogonalTo(Vector([-2.155,-9.353,-9.473])))
+    v = Vector([3.009,-6.172,3.692,-2.51])
+    b = Vector([6.404,-9.144,2.759,8.718])
+    print(v.projectedOnTo(b))
+    print(v.componentOrthogonalTo(b))
