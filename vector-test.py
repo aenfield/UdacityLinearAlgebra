@@ -108,7 +108,7 @@ class AngleBetweenTest(unittest.TestCase):
         self.assertTrue('Cannot calculate the angle between using a zero vector' in str(context.exception))
 
 
-class ParallelAndOrthogonalBooleans(unittest.TestCase):
+class ParallelAndOrthogonalBooleansTest(unittest.TestCase):
 
     def test_parallel_boolean(self):
         # v1, v2, v3, and of course v0 are all parallel;
@@ -169,7 +169,8 @@ class ParallelAndOrthogonalBooleans(unittest.TestCase):
         self.assertTrue(Vector([0,0]).isZero())
         self.assertFalse(Vector([1,1]).isZero())
 
-class ProjectingVectors(unittest.TestCase):
+
+class ProjectingVectorsTest(unittest.TestCase):
 
     def test_projection_onto_basis_vector(self):
         v = Vector([1,1])
@@ -181,7 +182,30 @@ class ProjectingVectors(unittest.TestCase):
         v = Vector([1,1])
         b = Vector([5,0])
 
-        self.assertEqual(v.componentOrthogonalTo(b), Vector([0,1]))        
+        self.assertEqual(v.componentOrthogonalTo(b), Vector([0,1]))
+
+
+class CrossProductsTest(unittest.TestCase):
+
+    def test_cross_product(self):
+        v1 = Vector([5,3,-2])
+        v2 = Vector([-1,0,3])
+
+        self.assertEqual(v1.cross(v2), Vector([9,-13,3]))
+
+    def test_cross_product_parallelogram_area(self):
+        v1 = Vector([5,3,-2])
+        v2 = Vector([-1,0,3])
+
+        self.assertAlmostEqual(v1.cross_parallelogram_area(v2), 16.093, places=3)
+
+    def test_cross_product_triangle_area(self):
+        v1 = Vector([5,3,-2])
+        v2 = Vector([-1,0,3])
+
+        self.assertAlmostEqual(v1.cross_triangle_area(v2), 16.093 / 2, places=3)
+
+    # TODO we only implement cross product for 3-D vectors, and could check for that
 
 
 

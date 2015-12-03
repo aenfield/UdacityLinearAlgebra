@@ -98,10 +98,28 @@ class Vector(object):
         return self - self.projectedOnTo(b) # self.projectedOnTo(b) is v parallel
         # his impl catches the exception his impl raises in projectedOnTo
 
+    def cross(self, v):
+        x1, y1, z1 = self.coordinates
+        x2, y2, z2 = v.coordinates
+
+        return Vector([
+            (y1*z2 - y2*z1),
+            (-(x1*z2 - x2*z1)),
+            (x1*y2 - x2*y1)
+        ])
+
+    def cross_parallelogram_area(self, v):
+        return (self.cross(v).magnitude())
+
+    def cross_triangle_area(self, v):
+        return 0.5 * self.cross_parallelogram_area(v)
 
 
 
 if __name__ == '__main__':
+    # here we're using the implemented functions to output the results of the
+    # questions asked by the course
+
     print(Vector([8.218,-9.341]) + Vector([-1.129,2.111]))
     print(Vector([7.119,8.215]) - Vector([-8.223,0.878]))
     print(7.41 * Vector([1.671,-1.012,-0.318]))
@@ -139,3 +157,8 @@ if __name__ == '__main__':
     b = Vector([6.404,-9.144,2.759,8.718])
     print(v.projectedOnTo(b))
     print(v.componentOrthogonalTo(b))
+    print()
+
+    print(Vector([8.462,7.893,-8.187]).cross(Vector([6.984,-5.975,4.778])))
+    print(Vector([-8.987,-9.838,5.031]).cross_parallelogram_area(Vector([-4.268,-1.861,-8.866])))
+    print(Vector([1.5,9.547,3.691]).cross_triangle_area(Vector([-6.007,0.124,5.772])))
