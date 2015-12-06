@@ -127,11 +127,13 @@ class Line(object):
             return (0, (self.constant_term / self.normal_vector[1]) )
 
     def intersectionWith(self, line):
-        if self.parallelTo(line):
-            raise Exception(Line.NO_INTERSECTIONS_NOT_COINCIDENT)
-        elif self.coincidentTo(line):
+        if self.coincidentTo(line):
             raise Exception(Line.INFINITE_INTERSECTIONS_COINCIDENT)
+        elif self.parallelTo(line):
+            raise Exception(Line.NO_INTERSECTIONS_NOT_COINCIDENT)
         else:
+            # since it's not the same line or a parallel line, we have to have
+            # one intersection, with these coordinates:
             a, b = self.normal_vector[0], self.normal_vector[1]
             c, d = line.normal_vector[0], line.normal_vector[1]
             k1, k2 = self.constant_term, line.constant_term
