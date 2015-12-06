@@ -41,6 +41,10 @@ class Vector(object):
     def __rmul__(self, scalar):
         return self * scalar  # implement by calling __mul__ here
 
+    # implement indexing by passing through using the coordinates member
+    def __getitem__(self, index):
+        return self.coordinates[index]
+
     def magnitude(self):
         # magnitude is the sqrt of each component squared (this is the normal formula
         # for distance, but since the second component is the origin, we subtract

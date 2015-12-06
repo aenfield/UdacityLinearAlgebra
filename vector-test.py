@@ -208,6 +208,22 @@ class CrossProductsTest(unittest.TestCase):
     # TODO we only implement cross product for 3-D vectors, and could check for that
 
 
+class IteratorTest(unittest.TestCase):
+
+    def test_vectors_implement_get_item_using_coordinates(self):
+        v = Vector([1,2])
+
+        self.assertEqual(v[0], 1)
+        self.assertEqual(v[1], 2)
+
+    def test_vectors_are_iterable_via_fallback_to_getitem(self):
+        # let's also just double-check that a vector is now iterable via fallback to __getitem__
+        v = Vector([3,4])
+
+        # list uses the iterator, just like a for would
+        as_list = list(v)
+        self.assertEqual(as_list, [3,4])
+
 
 if __name__ == '__main__':
     unittest.main()
