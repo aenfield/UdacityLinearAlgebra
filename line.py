@@ -94,6 +94,8 @@ class Line(object):
         return self.normal_vector.parallelTo(line.normal_vector)
 
     def coincidentTo(self, line):
+        # TODO include logic to handle when normal vector is zero - 1:40 in 'coding functions for lines - solution'
+
         # first, coincident lines - equal lines - have to be parallel
         if not self.parallelTo(line):
             return False
@@ -102,8 +104,6 @@ class Line(object):
         # other line must be orthogonal to the lines' normal vectors
         p_on_self = self.pointOnLine()
         p_on_line = line.pointOnLine()
-        # p_on_self = ( (self.constant_term / self.normal_vector[0]), 0)
-        # p_on_line = ( (line.constant_term / line.normal_vector[0]), 0)
 
         v_joining_lines = Vector(p_on_self) - Vector(p_on_line)
 
@@ -117,6 +117,7 @@ class Line(object):
     # doesn't need any particular point, so we do the easy thing and set one
     # dimension to zero and return the result (we still have to complicated things
     # by handling vertical and horizontal lines)
+    # Later: I could have just used line.basepoint - :-(
     def pointOnLine(self):
         # horizontal lines have a normal vector with 0 for the x component
         if self.normal_vector[0] != 0:
@@ -134,8 +135,8 @@ class Line(object):
         else:
             # since it's not the same line or a parallel line, we have to have
             # one intersection, with these coordinates:
-            a, b = self.normal_vector[0], self.normal_vector[1]
-            c, d = line.normal_vector[0], line.normal_vector[1]
+            a, b = self.normal_vector
+            c, d = line.normal_vector
             k1, k2 = self.constant_term, line.constant_term
             denominator = (a*d) - (b*c)
             return ( ( ((d*k1) - (b*k2)) / denominator),
@@ -153,3 +154,28 @@ class Line(object):
 class MyDecimal(Decimal):
     def is_near_zero(self, eps=1e-10):
         return abs(self) < eps
+
+
+def try_and_print_exception_if_it_fails(func, *args):
+    try:
+        print(func(*args))
+    except Exception as e:
+        print(e)
+        pass
+
+if __name__ == '__main__':
+    # here we're using the implemented functions to output the results of the
+    # questions asked by the course
+
+    # TODO update to use None and line obj when no intersection
+    l1 = Line(Vector([4.046,2.836]), 1.21)
+    l2 = Line(Vector([10.115,7.09]), 3.025)
+    try_and_print_exception_if_it_fails(l1.intersectionWith, l2)
+
+    l1 = Line(Vector([7.204,3.182]), 8.68)
+    l2 = Line(Vector([8.172,4.114]), 9.883)
+    try_and_print_exception_if_it_fails(l1.intersectionWith, l2)
+
+    l1 = Line(Vector([1.182,5.562]), 6.744)
+    l2 = Line(Vector([1.773, 8.343]), 9.525)
+    try_and_print_exception_if_it_fails(l1.intersectionWith, l2)

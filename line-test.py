@@ -59,6 +59,9 @@ class CoincidentLinesTest(unittest.TestCase):
     def test_can_get_a_point_on_a_vertical_line(self):
         self.assertEqual(Line(Vector([1,0]), 3).pointOnLine(), (3,0))
 
+    def test_equal_overload_uses_coincident_lines(self):
+        self.assertTrue(False)
+
 
 class IntersectionTest(unittest.TestCase):
 
@@ -70,6 +73,7 @@ class IntersectionTest(unittest.TestCase):
 
     def test_no_intersections(self):
         # these lines are parallel, so no intersections
+        # TODO update to expect None instead of exception
         l1 = Line(Vector([2,3]), 6)
         l2 = Line(Vector([2,3]), 12)
 
@@ -80,6 +84,7 @@ class IntersectionTest(unittest.TestCase):
 
     def test_infinite_intersections(self):
         # these lines are equal/coincident, so infinite intersections
+        # TODO update to expect a Line obj that's the same as l1, since they're the same line
         l1 = Line(Vector([1,1]), 1)
         l2 = Line(Vector([-3,-3]), -3)
 
