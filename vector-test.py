@@ -1,6 +1,7 @@
 import unittest
 
 from vector import Vector
+from decimal import Decimal
 
 class AdditionTest(unittest.TestCase):
 
@@ -50,7 +51,7 @@ class MagnitudeTest(unittest.TestCase):
     def testMagnitudeOfAVector(self):
         v1 = Vector([4,4])
 
-        self.assertEqual(v1.magnitude(), 5.65685424949238)
+        self.assertEqual(v1.magnitude(), Decimal('5.656854249492380195206754897'))
 
 
 class NormalizationTest(unittest.TestCase):
@@ -60,9 +61,9 @@ class NormalizationTest(unittest.TestCase):
 
         v1n = v1.normalized()
 
-        self.assertEqual(v1n.coordinates[0], 0.7071067811865475)
-        self.assertEqual(v1n.coordinates[1], 0.7071067811865475)
-        self.assertEqual(v1n.magnitude(), 1)
+        self.assertEqual(v1n.coordinates[0], Decimal('0.7071067811865475244008443620'))
+        self.assertEqual(v1n.coordinates[1], Decimal('0.7071067811865475244008443620'))
+        self.assertEqual(round(v1n.magnitude()), 1)
 
     def testNormalizedHandlesZeroVectorWithException(self):
         v1 = Vector([0,0])
@@ -95,8 +96,8 @@ class AngleBetweenTest(unittest.TestCase):
         v1 = Vector([1,2,-1])
         v2 = Vector([3,1,0])
 
-        self.assertEqual(v1.angleBetween(v2), 0.87, places=2)
-        self.assertEqual(v1.angleBetween(v2, degrees=True), 50, places=0)
+        self.assertEqual(v1.angleBetween(v2), 0.869122203007293)
+        self.assertEqual(v1.angleBetween(v2, degrees=True), 49.797034113430236)
 
     def test_angle_between_with_zero_vector(self):
         v1 = Vector([1,2,-1])
@@ -197,13 +198,13 @@ class CrossProductsTest(unittest.TestCase):
         v1 = Vector([5,3,-2])
         v2 = Vector([-1,0,3])
 
-        self.assertEqual(v1.cross_parallelogram_area(v2), 16.093, places=3)
+        self.assertEqual(v1.cross_parallelogram_area(v2), Decimal('16.09347693943108118684999127'))
 
     def test_cross_product_triangle_area(self):
         v1 = Vector([5,3,-2])
         v2 = Vector([-1,0,3])
 
-        self.assertEqual(v1.cross_triangle_area(v2), 16.093 / 2, places=3)
+        self.assertEqual(v1.cross_triangle_area(v2), Decimal('8.046738469715540593424995635'))
 
     # TODO we only implement cross product for 3-D vectors, and could check for that
 

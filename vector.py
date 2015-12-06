@@ -1,5 +1,5 @@
 import math
-from decimal import Decimal
+from decimal import Decimal, DivisionUndefined
 
 class Vector(object):
     def __init__(self, coordinates):
@@ -68,9 +68,9 @@ class Vector(object):
         return sum([(x*y) for (x,y) in zip(self.coordinates, v.coordinates)])
 
     def angleBetween(self, v, degrees=False):
-        try:
+        if (not(self.isZero()) and not(v.isZero())):
             radians_between = math.acos((self.dot(v)) / (self.magnitude() * v.magnitude()))
-        except ZeroDivisionError:
+        else:
             raise Exception('Cannot calculate the angle between using a zero vector')
 
         return radians_between if not degrees else math.degrees(radians_between)
