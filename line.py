@@ -8,6 +8,8 @@ getcontext().prec = 30
 class Line(object):
 
     NO_NONZERO_ELTS_FOUND_MSG = 'No nonzero elements found'
+    NO_INTERSECTIONS_NOT_COINCIDENT = 'No intersection - lines are parallel and not coincident'
+    INFINITE_INTERSECTIONS_COINCIDENT = 'Infinite intersections - lines are coincident'
 
     def __init__(self, normal_vector=None, constant_term=None):
         self.dimension = 2
@@ -94,7 +96,7 @@ class Line(object):
     def coincidentTo(self, line):
         # first, coincident lines - equal lines - have to be parallel
         if not self.parallelTo(line):
-            return false
+            return False
 
         # then, a vector connecting one point on one line to a point on the
         # other line must be orthogonal to the lines' normal vectors
@@ -124,6 +126,18 @@ class Line(object):
             # it's a horizontal line, so we'll return the point on the y-axis
             return (0, (self.constant_term / self.normal_vector[1]) )
 
+    def intersectionWith(self, line):
+        if self.parallelTo(line):
+            raise Exception(Line.NO_INTERSECTIONS_NOT_COINCIDENT)
+        elif self.coincidentTo(line):
+            raise Exception(Line.INFINITE_INTERSECTIONS_COINCIDENT)
+        else:
+            a, b = self.normal_vector[0], self.normal_vector[1]
+            c, d = line.normal_vector[0], line.normal_vector[1]
+            k1, k2 = self.constant_term, line.constant_term
+            denominator = (a*d) - (b*c)
+            return ( ( ((d*k1) - (b*k2)) / denominator),
+                     ( (-(c*k1) + (a*k2)) / denominator) )
 
 
     @staticmethod

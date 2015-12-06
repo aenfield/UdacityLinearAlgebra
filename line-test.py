@@ -1,5 +1,6 @@
 import unittest
 
+import line
 from line import Line
 from vector import Vector
 
@@ -57,6 +58,37 @@ class CoincidentLinesTest(unittest.TestCase):
 
     def test_can_get_a_point_on_a_vertical_line(self):
         self.assertEqual(Line(Vector([1,0]), 3).pointOnLine(), (3,0))
+
+
+class IntersectionTest(unittest.TestCase):
+
+    def test_single_intersection(self):
+        l1 = Line(Vector([1,1]), 3)
+        l2 = Line(Vector([1,-1]), 1)
+
+        self.assertEqual(l1.intersectionWith(l2), (2,1) )
+
+    def test_no_intersections(self):
+        # these lines are parallel, so no intersections
+        l1 = Line(Vector([2,3]), 6)
+        l2 = Line(Vector([2,3]), 12)
+
+        with self.assertRaises(Exception) as context:
+            l1.intersectionWith(l2)
+
+        self.assertTrue(line.Line.NO_INTERSECTIONS_NOT_COINCIDENT in str(context.exception))
+
+    def test_infinite_intersections(self):
+        # these lines are equal/coincident, so infinite intersections
+        l1 = Line(Vector([1,1]), 1)
+        l2 = Line(Vector([-3,-3]), -3)
+
+        with self.assertRaises(Exception) as context:
+            l1.intersectionWith(l2)
+
+        self.assertTrue(line.Line.INFINITE_INTERSECTIONS_COINCIDENT in str(context.exception))
+
+
 
 
 
