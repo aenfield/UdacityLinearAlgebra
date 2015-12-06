@@ -25,6 +25,8 @@ class Line(object):
 
         self.set_basepoint()
 
+    def __eq__(self, l):
+        return self.coincidentTo(l)
 
     def set_basepoint(self):
         try:
@@ -129,9 +131,11 @@ class Line(object):
 
     def intersectionWith(self, line):
         if self.coincidentTo(line):
-            raise Exception(Line.INFINITE_INTERSECTIONS_COINCIDENT)
+            # same line, return self
+            return self
         elif self.parallelTo(line):
-            raise Exception(Line.NO_INTERSECTIONS_NOT_COINCIDENT)
+            # parallel but not same line, so no intersections, return None
+            return None
         else:
             # since it's not the same line or a parallel line, we have to have
             # one intersection, with these coordinates:
@@ -156,26 +160,19 @@ class MyDecimal(Decimal):
         return abs(self) < eps
 
 
-def try_and_print_exception_if_it_fails(func, *args):
-    try:
-        print(func(*args))
-    except Exception as e:
-        print(e)
-        pass
 
 if __name__ == '__main__':
     # here we're using the implemented functions to output the results of the
     # questions asked by the course
 
-    # TODO update to use None and line obj when no intersection
     l1 = Line(Vector([4.046,2.836]), 1.21)
     l2 = Line(Vector([10.115,7.09]), 3.025)
-    try_and_print_exception_if_it_fails(l1.intersectionWith, l2)
+    print(l1.intersectionWith(l2))
 
     l1 = Line(Vector([7.204,3.182]), 8.68)
     l2 = Line(Vector([8.172,4.114]), 9.883)
-    try_and_print_exception_if_it_fails(l1.intersectionWith, l2)
+    print(l1.intersectionWith(l2))
 
     l1 = Line(Vector([1.182,5.562]), 6.744)
     l2 = Line(Vector([1.773, 8.343]), 9.525)
-    try_and_print_exception_if_it_fails(l1.intersectionWith, l2)
+    print(l1.intersectionWith(l2))
