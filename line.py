@@ -1,4 +1,4 @@
-from decimal import Decimal, getcontext
+from decimal import Decimal, getcontext, DivisionByZero
 
 from vector import Vector
 
@@ -90,6 +90,39 @@ class Line(object):
 
     def parallelTo(self, line):
         return self.normal_vector.parallelTo(line.normal_vector)
+
+    def coincidentTo(self, line):
+        # first, coincident lines - equal lines - have to be parallel
+        if not self.parallelTo(line):
+            return false
+
+        # then, a vector connecting one point on one line to a point on the
+        # other line must be orthogonal to the lines' normal vectors
+        p_on_self = self.pointOnLine()
+        p_on_line = line.pointOnLine()
+        # p_on_self = ( (self.constant_term / self.normal_vector[0]), 0)
+        # p_on_line = ( (line.constant_term / line.normal_vector[0]), 0)
+
+        v_joining_lines = Vector(p_on_self) - Vector(p_on_line)
+
+        return (v_joining_lines.orthogonalTo(self.normal_vector.normalized()))
+        # TODO what if the x-coord of the normal vector is zero? have to do it
+        # the other direction w/ y? is this generalizable? seems like the logic
+        # getting a point on each line should be in its own function, which could
+        # be tested in isolation and could abstract the vertical/horizontal thing
+
+    # return a point on the line - this is currently used for coincidentTo, which
+    # doesn't need any particular point, so we do the easy thing and set one
+    # dimension to zero and return the result (we still have to complicated things
+    # by handling vertical and horizontal lines)
+    def pointOnLine(self):
+        # horizontal lines have a normal vector with 0 for the x component
+        if self.normal_vector[0] != 0:
+            # not a horizontal line, and we'll return the point on the x-axis
+            return ( (self.constant_term / self.normal_vector[0]), 0)
+        else:
+            # it's a horizontal line, so we'll return the point on the y-axis
+            return (0, (self.constant_term / self.normal_vector[1]) )
 
 
 

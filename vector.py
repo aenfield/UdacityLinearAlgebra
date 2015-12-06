@@ -119,6 +119,11 @@ class Vector(object):
     def cross_triangle_area(self, v):
         return Decimal('0.5') * self.cross_parallelogram_area(v)
 
+    # TODO generally: I updated this to use Decimal only when required by
+    # Line. The entire class could use some cleanup in what's returned I think
+    # and the use of isclose and tolerance manually (which were needed when we
+    # used floats, but aren't needed now?)
+
 
 
 if __name__ == '__main__':
