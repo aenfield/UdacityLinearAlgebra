@@ -110,10 +110,6 @@ class Line(object):
         v_joining_lines = Vector(p_on_self) - Vector(p_on_line)
 
         return (v_joining_lines.orthogonalTo(self.normal_vector.normalized()))
-        # TODO what if the x-coord of the normal vector is zero? have to do it
-        # the other direction w/ y? is this generalizable? seems like the logic
-        # getting a point on each line should be in its own function, which could
-        # be tested in isolation and could abstract the vertical/horizontal thing
 
     # return a point on the line - this is currently used for coincidentTo, which
     # doesn't need any particular point, so we do the easy thing and set one
