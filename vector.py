@@ -1,11 +1,12 @@
 import math
+from decimal import Decimal
 
 class Vector(object):
     def __init__(self, coordinates):
         try:
             if not coordinates:
                 raise ValueError
-            self.coordinates = tuple(coordinates)
+            self.coordinates = tuple([Decimal(x) for x in coordinates])
             self.dimension = len(coordinates)
 
         except ValueError:
@@ -35,7 +36,7 @@ class Vector(object):
 
     # support vector * scalar (for ex, v*3)
     def __mul__(self, scalar):
-        return Vector([scalar*x for x in self.coordinates])
+        return Vector([Decimal(scalar)*x for x in self.coordinates])
 
     # we overload __rmul__ to support scalar * vector operations (for ex, 3*v)
     def __rmul__(self, scalar):
@@ -49,7 +50,7 @@ class Vector(object):
         # magnitude is the sqrt of each component squared (this is the normal formula
         # for distance, but since the second component is the origin, we subtract
         # zero)
-        return math.sqrt(sum([x**2 for x in self.coordinates]))
+        return (sum([x**2 for x in self.coordinates])).sqrt()
 
     def normalized(self):
         # the normalization of a vector is another vector w/ the same direction and
@@ -58,7 +59,7 @@ class Vector(object):
         # so that its length is one (remember that scaling doesn't change the
         # direction)
         try:
-            return (1/self.magnitude()) * self
+            return (Decimal('1.0')/self.magnitude()) * self
         except ZeroDivisionError:
             raise Exception('Cannot normalize the zero vector')
 
@@ -76,8 +77,8 @@ class Vector(object):
 
     def parallelTo(self, v):
         # the class-defined definition of parallel is where two vectors are scalar
-        # multiples of each other - I wasn't sure how to implement this simply,
-        # and the instructor didn't implement it this way either...
+        # multiples of each other - I implement by seeing if the angle between
+        # the two vector is either 0 or 180 degrees
         return (self.isZero() or v.isZero() or
                 math.isclose(self.angleBetween(v), 0, abs_tol=1e-05) or
                 math.isclose(self.angleBetween(v), math.pi, rel_tol=1e-05))
@@ -116,7 +117,7 @@ class Vector(object):
         return (self.cross(v).magnitude())
 
     def cross_triangle_area(self, v):
-        return 0.5 * self.cross_parallelogram_area(v)
+        return Decimal('0.5') * self.cross_parallelogram_area(v)
 
 
 

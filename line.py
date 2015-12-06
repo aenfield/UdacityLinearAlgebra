@@ -88,6 +88,10 @@ class Line(object):
 
         return output
 
+    def parallelTo(self, line):
+        return self.normal_vector.parallelTo(line.normal_vector)
+
+
 
     @staticmethod
     def first_nonzero_index(iterable):
