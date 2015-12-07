@@ -51,7 +51,7 @@ class MagnitudeTest(unittest.TestCase):
     def testMagnitudeOfAVector(self):
         v1 = Vector([4,4])
 
-        self.assertEqual(v1.magnitude(), Decimal('5.656854249492380195206754897'))
+        self.assertAlmostEqual(v1.magnitude(), Decimal('5.656854249492380195206754897'))
 
 
 class NormalizationTest(unittest.TestCase):
@@ -61,8 +61,8 @@ class NormalizationTest(unittest.TestCase):
 
         v1n = v1.normalized()
 
-        self.assertEqual(v1n.coordinates[0], Decimal('0.7071067811865475244008443620'))
-        self.assertEqual(v1n.coordinates[1], Decimal('0.7071067811865475244008443620'))
+        self.assertAlmostEqual(v1n.coordinates[0], Decimal('0.7071067811865475244008443620'))
+        self.assertAlmostEqual(v1n.coordinates[1], Decimal('0.7071067811865475244008443620'))
         self.assertEqual(round(v1n.magnitude()), 1)
 
     def testNormalizedHandlesZeroVectorWithException(self):
@@ -198,13 +198,13 @@ class CrossProductsTest(unittest.TestCase):
         v1 = Vector([5,3,-2])
         v2 = Vector([-1,0,3])
 
-        self.assertEqual(v1.cross_parallelogram_area(v2), Decimal('16.09347693943108118684999127'))
+        self.assertAlmostEqual(v1.cross_parallelogram_area(v2), Decimal('16.09347693943108118684999127'))
 
     def test_cross_product_triangle_area(self):
         v1 = Vector([5,3,-2])
         v2 = Vector([-1,0,3])
 
-        self.assertEqual(v1.cross_triangle_area(v2), Decimal('8.046738469715540593424995635'))
+        self.assertAlmostEqual(v1.cross_triangle_area(v2), Decimal('8.046738469715540593424995635'))
 
     # TODO we only implement cross product for 3-D vectors, and could check for that
 
