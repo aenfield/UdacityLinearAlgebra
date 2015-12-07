@@ -50,15 +50,6 @@ class CoincidentLinesTest(unittest.TestCase):
 
         self.assertTrue(l1.coincidentTo(l2))
 
-    def test_can_get_a_point_on_a_diagonal_line(self):
-        self.assertEqual(Line(Vector([1,1]), 1).pointOnLine(), (1,0))
-
-    def test_can_get_a_point_on_a_horizontal_line(self):
-        self.assertEqual(Line(Vector([0,1]), 2).pointOnLine(), (0,2))
-
-    def test_can_get_a_point_on_a_vertical_line(self):
-        self.assertEqual(Line(Vector([1,0]), 3).pointOnLine(), (3,0))
-
     def test_equal_overload_uses_coincident_lines(self):
         l1 = Line(Vector([1,1]), 1)
         l2 = Line(Vector([-3,-3]), -3)
@@ -78,8 +69,6 @@ class IntersectionTest(unittest.TestCase):
         # these lines are parallel, so no intersections
         l1 = Line(Vector([2,3]), 6)
         l2 = Line(Vector([2,3]), 12)
-
-        # TODO testing - does this show?
 
         self.assertEqual(l1.intersectionWith(l2), None)
 

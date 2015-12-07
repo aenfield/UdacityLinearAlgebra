@@ -88,6 +88,23 @@ class Plane(object):
 
         return output
 
+    def parallelTo(self, p):
+        return self.normal_vector.parallelTo(p.normal_vector)
+
+    def coincidentTo(self, p):
+        # TODO if applicable to plans (?) - include logic to handle when normal vector is zero - 1:40 in 'coding functions for lines - solution'
+
+        # first, coincident planes - equal planes - have to be parallel
+        if not self.parallelTo(p):
+            return False
+
+        v_joining_planes = self.basepoint - p.basepoint
+
+        return (v_joining_planes.orthogonalTo(self.normal_vector.normalized()))
+
+    def __eq__(self, l):
+        return self.coincidentTo(l)
+
 
     @staticmethod
     def first_nonzero_index(iterable):
@@ -100,3 +117,20 @@ class Plane(object):
 class MyDecimal(Decimal):
     def is_near_zero(self, eps=1e-10):
         return abs(self) < eps
+
+
+if __name__ == '__main__':
+    # here we're using the implemented functions to output the results of the
+    # questions asked by the course
+
+    p1 = Plane([-0.412,3.806,0.728], -3.46)
+    p2 = Plane([1.03,-9.515,-1.82], 8.65)
+    print(p1.parallelTo(p2), p1 == p2)
+
+    p1 = Plane([2.611,5.528,0.283], 4.6)
+    p2 = Plane([7.715,8.306,5.342], 3.76)
+    print(p1.parallelTo(p2), p1 == p2)
+
+    p1 = Plane([-7.926,8.625,-7.212], -7.952)
+    p2 = Plane([-2.642,2.875,-2.404], -2.443)
+    print(p1.parallelTo(p2), p1 == p2)

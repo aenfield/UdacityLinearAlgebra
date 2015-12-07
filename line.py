@@ -25,9 +25,6 @@ class Line(object):
 
         self.set_basepoint()
 
-    def __eq__(self, l):
-        return self.coincidentTo(l)
-
     def set_basepoint(self):
         try:
             n = self.normal_vector
@@ -45,7 +42,6 @@ class Line(object):
                 self.basepoint = None
             else:
                 raise e
-
 
     def __str__(self):
 
@@ -102,28 +98,17 @@ class Line(object):
         if not self.parallelTo(line):
             return False
 
-        # then, a vector connecting one point on one line to a point on the
-        # other line must be orthogonal to the lines' normal vectors
-        p_on_self = self.pointOnLine()
-        p_on_line = line.pointOnLine()
+        # # then, a vector connecting one point on one line to a point on the
+        # # other line must be orthogonal to the lines' normal vectors
+        # p_on_self = self.pointOnLine()
+        # p_on_line = line.pointOnLine()
 
-        v_joining_lines = Vector(p_on_self) - Vector(p_on_line)
+        v_joining_lines = self.basepoint - line.basepoint
 
         return (v_joining_lines.orthogonalTo(self.normal_vector.normalized()))
 
-    # return a point on the line - this is currently used for coincidentTo, which
-    # doesn't need any particular point, so we do the easy thing and set one
-    # dimension to zero and return the result (we still have to complicated things
-    # by handling vertical and horizontal lines)
-    # Later: I could have just used line.basepoint - :-(
-    def pointOnLine(self):
-        # horizontal lines have a normal vector with 0 for the x component
-        if self.normal_vector[0] != 0:
-            # not a horizontal line, and we'll return the point on the x-axis
-            return ( (self.constant_term / self.normal_vector[0]), 0)
-        else:
-            # it's a horizontal line, so we'll return the point on the y-axis
-            return (0, (self.constant_term / self.normal_vector[1]) )
+    def __eq__(self, l):
+        return self.coincidentTo(l)
 
     def intersectionWith(self, line):
         if self.coincidentTo(line):
