@@ -26,15 +26,17 @@ class LinearSystem(object):
             raise Exception(self.ALL_PLANES_MUST_BE_IN_SAME_DIM_MSG)
 
 
-    def swap_rows(self, row1, row2):
-        pass # add your code here
+    def swap_rows(self, row1_index, row2_index):
+        self.planes[row1_index], self.planes[row2_index] = self.planes[row2_index], self.planes[row1_index]
 
 
-    def multiply_coefficient_and_row(self, coefficient, row):
-        pass # add your code here
+    def multiply_coefficient_and_row(self, coefficient, row_index):
+        new_normal_vector = self.planes[row_index].normal_vector * coefficient
+        new_constant_term = self.planes[row_index].constant_term * coefficient
+        self.planes[row_index] = Plane(new_normal_vector, new_constant_term)
 
 
-    def add_multiple_times_row_to_row(self, coefficient, row_to_add, row_to_be_added_to):
+    def add_multiple_times_row_to_row(self, coefficient, row_to_add_index, row_to_be_added_to_index):
         pass # add your code here
 
 
@@ -84,22 +86,26 @@ class MyDecimal(Decimal):
     def is_near_zero(self, eps=1e-10):
         return abs(self) < eps
 
-p0 = Plane(normal_vector=Vector(['1','1','1']), constant_term='1')
-p1 = Plane(normal_vector=Vector(['0','1','0']), constant_term='2')
-p2 = Plane(normal_vector=Vector(['1','1','-1']), constant_term='3')
-p3 = Plane(normal_vector=Vector(['1','0','-2']), constant_term='2')
 
-s = LinearSystem([p0,p1,p2,p3])
 
-print(s.indices_of_first_nonzero_terms_in_each_row())
-print('{},{},{},{}'.format(s[0],s[1],s[2],s[3]))
-print(len(s))
-print(s)
-print()
+if __name__ == '__main__':
+    # initial code provided with module
+    p0 = Plane(normal_vector=Vector(['1','1','1']), constant_term='1')
+    p1 = Plane(normal_vector=Vector(['0','1','0']), constant_term='2')
+    p2 = Plane(normal_vector=Vector(['1','1','-1']), constant_term='3')
+    p3 = Plane(normal_vector=Vector(['1','0','-2']), constant_term='2')
 
-s[0] = p1
-print(s)
-print()
+    s = LinearSystem([p0,p1,p2,p3])
 
-print(MyDecimal('1e-9').is_near_zero())
-print(MyDecimal('1e-11').is_near_zero())
+    print(s.indices_of_first_nonzero_terms_in_each_row())
+    print('{},{},{},{}'.format(s[0],s[1],s[2],s[3]))
+    print(len(s))
+    print(s)
+    print()
+
+    s[0] = p1
+    print(s)
+    print()
+
+    print(MyDecimal('1e-9').is_near_zero())
+    print(MyDecimal('1e-11').is_near_zero())
