@@ -38,7 +38,7 @@ class LinearSystem(object):
     # than what it's doing now
     def add_multiple_times_row_to_row(self, coefficient, row_to_add_index, row_to_be_added_to_index):
         plane_multiplied = self.planes[row_to_add_index].scaledBy(coefficient)
-        self.planes[row_to_be_added_to_index] = self.planes[row_to_add_index].add(plane_multiplied)
+        self.planes[row_to_be_added_to_index] = self.planes[row_to_be_added_to_index].add(plane_multiplied)
 
 
     def indices_of_first_nonzero_terms_in_each_row(self):
