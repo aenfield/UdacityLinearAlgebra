@@ -37,19 +37,6 @@ class CoincidentPlanesTest(unittest.TestCase):
         self.assertFalse(l1.coincidentTo(l2))
         self.assertFalse(l2.coincidentTo(l1))
 
-    # def test_coincident_vertical_planes_are_coincident(self):
-    #     l1 = Plane(Vector([1,0]), 1)
-    #     l2 = Plane(Vector([5,0]), 5)
-    #
-    #     self.assertTrue(l1.coincidentTo(l2))
-    #
-    # def test_coincident_horizontal_planes_are_coincident(self):
-    #     l1 = Plane(Vector([0,1]), 1)
-    #     l2 = Plane(Vector([0,5]), 5)
-    #
-    #     self.assertTrue(l1.coincidentTo(l2))
-    #
-
     def test_equal_overload_uses_coincident_planes(self):
         l1 = Plane(Vector([1,1,1]), 1)
         l2 = Plane(Vector([-3,-3,-3]), -3)

@@ -105,6 +105,16 @@ class Plane(object):
     def __eq__(self, l):
         return self.coincidentTo(l)
 
+    def scaledBy(self, coefficient):
+        new_normal_vector = self.normal_vector * coefficient
+        new_constant_term = self.constant_term * coefficient
+        return Plane(new_normal_vector, new_constant_term)
+
+    def add(self, plane):
+        new_normal_vector = self.normal_vector + plane.normal_vector
+        new_constant_term = self.constant_term + plane.constant_term
+        return Plane(new_normal_vector, new_constant_term)
+
 
     @staticmethod
     def first_nonzero_index(iterable):

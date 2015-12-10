@@ -4,6 +4,19 @@ from linsys import LinearSystem
 from plane import Plane
 from vector import Vector
 
+# Checks that the normal vector and the constant term are equal. Works with both
+# planes and lines since both have the same two components. We want this because
+# __eq__ in both cases returns True when the things being compared refer to the
+# same plane/line, even when component values are different, and here we want
+# to compare component values too. Rather then require multiple lines for each
+# comparison, we'll do it once here.
+# This should ideally be in the Line and Plane classes, but they don't have a
+# common parent or share utlity code (due to how the instructor implemented
+# them and I don't want to complicate things now by adding something like that.)
+def assertComponentsHaveSameValues(t, o1, o2):
+    t.assertEqual(o1.normal_vector, o2.normal_vector)
+    t.assertEqual(o1.constant_term, o2.constant_term)
+
 class BasicOperationsTest(unittest.TestCase):
     # here im going to use the test cases provided with/by the course
 
@@ -36,10 +49,11 @@ class BasicOperationsTest(unittest.TestCase):
         # to really test this then, we'd need probably to use some different -
         # perhaps poke further into the planes and validate coefficients and
         # constant term directly - and that's what I've added below w/ the
-        # comparisons of normal vectors. (They could probably use some de-duplication.)
+        # comparisons of normal vectors.
         # (It would also be better if we used assertEqual for each comparisons
         # instead of the assertTrue w/ the comparisons provided, at least because
-        # that'd show us the actual values when we have a failure.)
+        # that'd show us the actual values when we have a failure. I've done this
+        # where I've added tests.)
         p0 = Plane(Vector([0,1,0]), 2)
         p1 = Plane(Vector([1,1,1]), 1)
         p2 = Plane(Vector([1,1,-1]), 3)
@@ -56,22 +70,20 @@ class BasicOperationsTest(unittest.TestCase):
                          s[1] == p1 and
                          s[2] == Plane(Vector([-1,-1,1]), -3) and
                          s[3] == p3))
-        self.assertTrue((s[0].normal_vector == p0.normal_vector and
-                         s[1].normal_vector == p1.normal_vector and
-                         s[2].normal_vector == Plane(Vector([-1,-1,1]), -3).normal_vector and
-                         s[3].normal_vector == p3.normal_vector))
+        assertComponentsHaveSameValues(self, s[0], p0)
+        assertComponentsHaveSameValues(self, s[1], p1)
+        assertComponentsHaveSameValues(self, s[2], Plane(Vector([-1,-1,1]), -3))
+        assertComponentsHaveSameValues(self, s[3], p3)
 
         s.multiply_coefficient_and_row(10,1)
         self.assertTrue((s[0] == p0 and
                          s[1] == Plane(Vector([10,10,10]), 10) and
                          s[2] == Plane(Vector([-1,-1,1]), -3) and
                          s[3] == p3))
-        self.assertTrue((s[0].normal_vector == p0.normal_vector and
-                         s[1].normal_vector == Plane(Vector([10,10,10]), 10).normal_vector and
-                         s[1].constant_term == Plane(Vector([10,10,10]), 10).constant_term and
-                         s[2].normal_vector == Plane(Vector([-1,-1,1]), -3).normal_vector and
-                         s[2].constant_term == Plane(Vector([-1,-1,1]), -3).constant_term and
-                         s[3].normal_vector == p3.normal_vector))
+        assertComponentsHaveSameValues(self, s[0], p0)
+        assertComponentsHaveSameValues(self, s[1], Plane(Vector([10,10,10]), 10))
+        assertComponentsHaveSameValues(self, s[2], Plane(Vector([-1,-1,1]), -3))
+        assertComponentsHaveSameValues(self, s[3], p3)
 
     def test_add_multiple_times_to_row(self):
         p0 = Plane(Vector([0,1,0]), 2)
@@ -83,28 +95,29 @@ class BasicOperationsTest(unittest.TestCase):
 
         s.add_multiple_times_row_to_row(0,0,1)
         self.assertEqual(s[0], p0)
-        self.assertEqual(s[1], Plane(Vector(['10','10','10']), '10'))
-        self.assertEqual(s[2], Plane(Vector(['-1','-1','1']), '-3'))
+        self.assertEqual(s[1], p1)
+        self.assertEqual(s[2], p2)
         self.assertEqual(s[3], p3)
 
-        # TODO should update above to compare normal vectors and constant terms
-        # explicitly, below to replace old code w/ indiv assertions, and optionally
-        # overall here and all above to reduce duplication when comparing
-        # normal vectors and constant terms explicitly 
-
         s.add_multiple_times_row_to_row(1,0,1)
-        if not (s[0] == p1 and
-                s[1] == Plane(normal_vector=Vector(['10','11','10']), constant_term='12') and
-                s[2] == Plane(normal_vector=Vector(['-1','-1','1']), constant_term='-3') and
-                s[3] == p3):
-            print('test case 8 failed')
+        self.assertEqual(s[0], p0)
+        self.assertEqual(s[1], Plane(Vector(['10','11','10']), '12'))
+        self.assertEqual(s[2], p2)
+        self.assertEqual(s[3], p3)
+        assertComponentsHaveSameValues(self, s[0], p0)
+        assertComponentsHaveSameValues(self, s[1], Plane(Vector(['10','11','10']), '12'))
+        assertComponentsHaveSameValues(self, s[2], p2)
+        assertComponentsHaveSameValues(self, s[3], p3)
 
         s.add_multiple_times_row_to_row(-1,1,0)
-        if not (s[0] == Plane(normal_vector=Vector(['-10','-10','-10']), constant_term='-10') and
-                s[1] == Plane(normal_vector=Vector(['10','11','10']), constant_term='12') and
-                s[2] == Plane(normal_vector=Vector(['-1','-1','1']), constant_term='-3') and
-                s[3] == p3):
-            print('test case 9 failed')
+        self.assertEqual(s[0], Plane(Vector(['-10','-10','-10']), '-10'))
+        self.assertEqual(s[1], Plane(Vector(['10','11','10']), '12'))
+        self.assertEqual(s[2], p2)
+        self.assertEqual(s[3], p3)
+        assertComponentsHaveSameValues(self, s[0], Plane(Vector(['-10','-10','-10']), '-10'))
+        assertComponentsHaveSameValues(self, s[1], Plane(Vector(['10','11','10']), '12'))
+        assertComponentsHaveSameValues(self, s[2], p2)
+        assertComponentsHaveSameValues(self, s[3], p3)
 
 
 
