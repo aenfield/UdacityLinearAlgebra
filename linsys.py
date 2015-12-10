@@ -29,13 +29,9 @@ class LinearSystem(object):
     def swap_rows(self, row1_index, row2_index):
         self.planes[row1_index], self.planes[row2_index] = self.planes[row2_index], self.planes[row1_index]
 
-
     def multiply_coefficient_and_row(self, coefficient, row_index):
         self.planes[row_index] = self.planes[row_index].scaledBy(coefficient)
 
-    # TODO looks like this, when given 0 for the coefficient should be adding
-    # zero rows - i.e., not changing the row_to_be_added_to at all - rather
-    # than what it's doing now
     def add_multiple_times_row_to_row(self, coefficient, row_to_add_index, row_to_be_added_to_index):
         plane_multiplied = self.planes[row_to_add_index].scaledBy(coefficient)
         self.planes[row_to_be_added_to_index] = self.planes[row_to_be_added_to_index].add(plane_multiplied)
